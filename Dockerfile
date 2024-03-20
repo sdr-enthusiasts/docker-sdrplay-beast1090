@@ -51,6 +51,7 @@ echo "TARGETARCH $TARGETARCH" && \
 KEPT_PACKAGES=() && \
 TEMP_PACKAGES=() && \
 KEPT_PACKAGES+=(nano) && \
+TEMP_PACKAGES+=(git) && \
 #
 # install packages
 apt-get update && \
@@ -63,9 +64,9 @@ apt-get install -q -o Dpkg::Options::="--force-confnew" -y --no-install-recommen
 mkdir -p /etc/udev/rules.d/ && \
 curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
 chmod +x /tmp/install_sdrplay.sh && \
-/tmp/install_sdrplay.sh --no-soapy && \
+/tmp/install_sdrplay.sh --no-soapy
 #
-# 
+
 COPY rootfs/ /
 
 # Add Container Version
