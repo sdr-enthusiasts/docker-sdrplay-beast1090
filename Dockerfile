@@ -74,8 +74,8 @@ RUN set -x && \
 pushd /tmp && \
     branch="##BRANCH##" && \
     [[ "${branch:0:1}" == "#" ]] && branch="main" || true && \
-    git clone --depth=1 -b "$branch" https://github.com/sdr-enthusiasts/docker-sdrplay-beast.git && \
-    cd docker-sdrplay-beast && \
+    git clone --depth=1 -b "$branch" https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090.git && \
+    cd docker-sdrplay-beast1090 && \
     echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(git rev-parse --short HEAD)_$(git branch --show-current)" > "/.CONTAINER_VERSION" && \
 popd && \
 rm -rf /tmp/*

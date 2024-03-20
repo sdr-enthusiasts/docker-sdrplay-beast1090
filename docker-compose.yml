@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+# receiver-1090 retrieves 1090MHz Mode A/C/S  data from the SDR
+  sdrplay-beast1090:
+    image: ghcr.io/sdr-enthusiasts/docker-sdrplay-beast1090
+    tty: true
+    container_name: sdrplay-beast1090
+    hostname: sdrplay-beast1090
+    restart: always
+    device_cgroup_rules:
+      - 'c 189:* rwm'
+    volumes:
+      - /dev:/dev:ro
+    tmpfs:
+      - /run:exec,size=256M
+      - /tmp:size=128M
+      - /var/log:size=32M
