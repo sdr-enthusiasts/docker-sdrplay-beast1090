@@ -10,4 +10,4 @@ sleep 5
 s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)
 
 # shellcheck disable=SC2086
-"${s6wrap[@]}" /usr/local/bin/dump1090 --dev-sdrplay ${DUMP1090_EXTRA_ARGS}
+"${s6wrap[@]}" /usr/local/bin/dump1090 --quiet --dev-sdrplay ${DUMP1090_EXTRA_ARGS}
