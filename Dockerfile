@@ -29,7 +29,7 @@ cd dump1090 && \
 make RTLSDR=no AIRCRAFT_HASH_BITS=14 -j "$(nproc)" && \
 cp dump1090 /
 
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:rtlsdr
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
 
 ARG TARGETPLATFORM TARGETOS TARGETARCH
 
@@ -52,6 +52,7 @@ KEPT_PACKAGES=() && \
 TEMP_PACKAGES=() && \
 KEPT_PACKAGES+=(nano) && \
 TEMP_PACKAGES+=(git) && \
+KEPT_PACKAGES+=(libncurses6) && \
 #
 # install packages
 apt-get update && \
@@ -78,4 +79,8 @@ pushd /tmp && \
     cd docker-sdrplay-beast1090 && \
     echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(git rev-parse --short HEAD)_$(git branch --show-current)" > "/.CONTAINER_VERSION" && \
 popd && \
-rm -rf /tmp/*
+rm -rf /tmp/* && \
+# Clean-up.
+apt-get remove -y ${TEMP_PACKAGES[@]} && \
+apt-get autoremove -y && \
+rm -rf /src/* /tmp/* /var/lib/apt/lists/* && \

@@ -16,3 +16,5 @@ services:
       - /run:exec,size=256M
       - /tmp:size=128M
       - /var/log:size=32M
+    environment:
+      - DUMP1090_EXTRA_ARGS=--fix --max-range 500 --phase-enhance --lat xx.xxxxx --lon yy.yyyyy --adsbMode 1
