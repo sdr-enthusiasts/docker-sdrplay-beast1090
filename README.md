@@ -8,7 +8,12 @@ An ADSB receiver for SDRPlay SDRs with output in BEAST and other formats
 
 - [Docker-SDRPlay-Beast1090](#docker-sdrplay-beast1090)
   - [Table of Contents](#table-of-contents)
-- [docker-sdrplay-beast1090](#docker-sdrplay-beast1090-1)
+  - [Introduction](#introduction)
+  - [Compatibility](#compatibility)
+  - [Installation and use](#installation-and-use)
+    - [Prerequisite: install `udev` rules on your host system](#prerequisite-install-udev-rules-on-your-host-system)
+    - [Going live with Docker Compose](#going-live-with-docker-compose)
+    - [Message decoding introspection](#message-decoding-introspection)
 
 ## Introduction
 
@@ -65,10 +70,13 @@ After saving your `docker-compose.yml`, don't forget to start the service with `
 You can look at individual messages and what information they contain, either for all or for an individual aircraft by hex:
 
 ```bash
+# auto-updating table with all aircraft:
+docker exec -it sdrplay-beast1090 viewadsb
+
 # only for hex 3D3ED0
 docker exec -it sdrplay-beast1090 viewadsb --show-only 3D3ED0
 
-# for all aircraft
+# all aircraft in a continuous stream
 docker exec -it sdrplay-beast1090 viewadsb --no-interactive
 
 # show position / CPR debugging for hex 3D3ED0

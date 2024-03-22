@@ -79,8 +79,8 @@ pushd /tmp && \
     cd docker-sdrplay-beast1090 && \
     echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(git rev-parse --short HEAD)_$(git branch --show-current)" > "/.CONTAINER_VERSION" && \
 popd && \
-rm -rf /tmp/* && \
 # Clean-up.
 apt-get remove -y ${TEMP_PACKAGES[@]} && \
 apt-get autoremove -y && \
 rm -rf /src/* /tmp/* /var/lib/apt/lists/* && \
+rm -f /usr/local/bin/viewadsb && ln -s /usr/local/bin/readsb /usr/local/bin/viewadsb
