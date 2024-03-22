@@ -52,7 +52,6 @@ KEPT_PACKAGES=() && \
 TEMP_PACKAGES=() && \
 KEPT_PACKAGES+=(nano) && \
 TEMP_PACKAGES+=(git) && \
-KEPT_PACKAGES+=(libncurses6) && \
 #
 # install packages
 apt-get update && \
