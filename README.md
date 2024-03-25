@@ -33,7 +33,7 @@ To ensure that the container has access to the SDRPlay device, you should instal
 
 ```bash
 sudo mkdir -p -m 0755 /etc/udev/rules.d /etc/udev/hwdb.d
-sudo curl -sL -o curl -sL -o /etc/udev/rules.d/66-mirics.rules https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/66-mirics.rules
+sudo curl -sL -o /etc/udev/rules.d/66-mirics.rules https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/66-mirics.rules
 sudo curl -sL -o /etc/udev/hwdb.d/20-sdrplay.hwdb https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/20-sdrplay.hwdb
 sudo chmod 0755 /etc/udev/rules.d /etc/udev/hwdb.d
 sudo chmod go=r /etc/udev/rules.d/* /etc/udev/hwdb.d/*
