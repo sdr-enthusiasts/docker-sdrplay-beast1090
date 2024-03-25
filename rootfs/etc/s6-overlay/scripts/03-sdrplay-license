@@ -36,7 +36,15 @@ fi
 s6wrap=(s6wrap --quiet --timestamps --prepend="$SCRIPT_NAME" --args)
 
 #shellcheck disable=SC2154
-"${s6wrap[@]}" echo "This container uses SDRPlay API V3. If you are using a device that will use SDRPlay please be sure"
-"${s6wrap[@]}" echo "you are conforming to the license agreement."
+"${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+"${s6wrap[@]}" echo "IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING"
+"${s6wrap[@]}" echo ""
+"${s6wrap[@]}" echo "This container uses SDRPlay API V3. YOU MAY ONLY USE THIS CONTAINER IN AGREEMENT WITH THE LICENSE FOR SDRPlay API V3."
+"${s6wrap[@]}" echo ""
+"${s6wrap[@]}" cat /sdrplay_license.txt
+"${s6wrap[@]}" echo ""
+"${s6wrap[@]}" echo "If you want to reread the terms of this license, please execute the following command:"
 "${s6wrap[@]}" echo "docker exec -it <container name> cat /sdrplay_license.txt"
-"${s6wrap[@]}" echo "to view the license"
+"${s6wrap[@]}" echo "If you do not agree with the terms of this license for any reason, please STOP and REMOVE this container immediately!"
+"${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+
