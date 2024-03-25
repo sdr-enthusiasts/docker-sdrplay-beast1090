@@ -47,11 +47,16 @@ You should also have `docker` installed on your machine. If you haven't please s
 
 You can use the [`docker-compose.yml`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090/blob/main/docker-compose.yml) file in this repository as an example. Feel free to add the relevant part to an existing docker compose stack.
 
-If you need to add any additional parameter to `dump1090`, you can do so using the `DUMP1090_EXTRA_ARGS` environment parameter in `docker-compose.yml`. For example:
+**IMPORTANT**: You MUST read the [SDRplay License](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay) and AGREE to it before you can use this container. You must record your agreement by setting the `I_AGREE_TO_THE_SDRPLAY_LICENSE` environment variable to `yes` or `true`.  
+
+If you need to add any additional parameter to `dump1090`, you can do so using the `DUMP1090_EXTRA_ARGS` environment parameter in `docker-compose.yml`.
+
+Example:
 
 ```yaml
     environment:
       - DUMP1090_EXTRA_ARGS=--fix --max-range 500 --phase-enhance --lat ${FEEDER_LAT} --lon ${FEEDER_LONG} --adsbMode 1
+      - I_AGREE_TO_THE_SDRPLAY_LICENSE=true
 ```
 
 <details>

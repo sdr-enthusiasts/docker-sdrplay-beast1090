@@ -17,4 +17,5 @@ services:
       - /tmp:size=128M
       - /var/log:size=32M
     environment:
+      - I_AGREE_TO_THE_SDRPLAY_LICENSE=false
       - DUMP1090_EXTRA_ARGS=--fix --max-range 500 --phase-enhance --lat xx.xxxxx --lon yy.yyyyy --adsbMode 1

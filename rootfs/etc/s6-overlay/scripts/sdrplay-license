@@ -1,0 +1,42 @@
+#!/command/with-contenv bash
+#shellcheck shell=bash
+
+#shellcheck disable=SC1091
+source /scripts/common
+
+ARCH=$(uname -m)
+
+# shellcheck disable=SC2034
+s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)
+
+# if we're on an unsupported architecture SDR play isn't installed, exit
+if [ "${ARCH}" != "aarch64" ] && [ "$ARCH" != "x86_64" ]; then
+    "${s6wrap[@]}" echo "Unsupported architecture. The system reports $ARCH, we only support aarch64 and x86_64."
+    exit 1
+fi
+
+# Verify the SDRplay license has been agreed to
+if ! chk_enabled "$I_AGREE_TO_THE_SDRPLAY_LICENSE"; then
+    "${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+    "${s6wrap[@]}" echo "IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING"
+    "${s6wrap[@]}" echo ""
+    "${s6wrap[@]}" echo "YOU MUST AGREE TO THE SDRPLAY LICENSE AGREEMENT BEFORE YOU CAN USE THIS CONTAINER"
+    "${s6wrap[@]}" echo "You can read this license here: https://sdr-e.com/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay"
+    "${s6wrap[@]}" echo "Once you have read the license agreement, you must acknowledge your compliance with it by setting"
+    "${s6wrap[@]}" echo "I_AGREE_TO_THE_SDRPLAY_LICENSE=true in the Docker Environment variables for this container, and recreate the container"
+    "${s6wrap[@]}" echo "The container will now exit."
+    "${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+    exit 1
+fi
+
+#shellcheck disable=SC2154
+"${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+"${s6wrap[@]}" echo "IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING - IMPORTANT - READ THE FOLLOWING"
+"${s6wrap[@]}" echo ""
+"${s6wrap[@]}" echo "This container uses SDRPlay API V3. YOU MAY ONLY USE THIS CONTAINER IN COMPLIANCE WITH THE LICENSE FOR SDRPlay API V3."
+"${s6wrap[@]}" echo ""
+"${s6wrap[@]}" echo "If you want to reread the terms of this license, please go here:"
+"${s6wrap[@]}" echo "https://sdr-e.com/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay"
+"${s6wrap[@]}" echo "If you do not agree with the terms of this license for any reason, please STOP and REMOVE this container immediately!"
+"${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
+

@@ -62,9 +62,9 @@ apt-get install -q -o Dpkg::Options::="--force-confnew" -y --no-install-recommen
 #
 # Install the SDRPlay driver
 mkdir -p /etc/udev/rules.d/ && \
-curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
+curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/docker-sdrplay-beast1090/main/install_sdrplay.sh && \
 chmod +x /tmp/install_sdrplay.sh && \
-/tmp/install_sdrplay.sh --no-soapy
+/tmp/install_sdrplay.sh
 #
 
 COPY rootfs/ /
