@@ -3,7 +3,6 @@ version: '3.8'
 services:
   sdrplay-beast1090:
     image: ghcr.io/sdr-enthusiasts/docker-sdrplay-beast1090
-    tty: true
     container_name: sdrplay-beast1090
     hostname: sdrplay-beast1090
     restart: always
