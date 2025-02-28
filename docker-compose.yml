@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   sdrplay-beast1090:
     image: ghcr.io/sdr-enthusiasts/docker-sdrplay-beast1090

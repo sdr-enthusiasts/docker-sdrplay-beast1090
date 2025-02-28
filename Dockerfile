@@ -51,7 +51,6 @@ echo "TARGETARCH $TARGETARCH" && \
 KEPT_PACKAGES=() && \
 TEMP_PACKAGES=() && \
 KEPT_PACKAGES+=(nano) && \
-TEMP_PACKAGES+=(git) && \
 #
 # install packages
 apt-get update && \
@@ -64,22 +63,14 @@ apt-get install -q -o Dpkg::Options::="--force-confnew" -y --no-install-recommen
 mkdir -p /etc/udev/rules.d/ && \
 curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/docker-sdrplay-beast1090/main/install_sdrplay.sh && \
 chmod +x /tmp/install_sdrplay.sh && \
-/tmp/install_sdrplay.sh
+/tmp/install_sdrplay.sh && \
+# Add Container Version
+{ [[ "${VERSION_BRANCH:0:1}" == "#" ]] && VERSION_BRANCH="main" || true; } && \
+echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(curl -ssL "https://api.github.com/repos/$VERSION_REPO/commits/$VERSION_BRANCH" | awk '{if ($1=="\"sha\":") {print substr($2,2,7); exit}}')_$VERSION_BRANCH" > /.CONTAINER_VERSION && \
+# Clean up:
+apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y "${TEMP_PACKAGES[@]}" && \
+apt-get clean -q -y && \
+rm -rf /src /tmp/* /var/lib/apt/lists/* /git /var/cache/*
 #
 
 COPY rootfs/ /
-
-# Add Container Version
-RUN set -x && \
-pushd /tmp && \
-    branch="##BRANCH##" && \
-    { [[ "${branch:0:1}" == "#" ]] && branch="main" || true; } && \
-    git clone --depth=1 -b "$branch" https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090.git && \
-    cd docker-sdrplay-beast1090 && \
-    echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(git rev-parse --short HEAD)_$(git branch --show-current)" > "/.CONTAINER_VERSION" && \
-popd && \
-# Clean-up.
-apt-get remove -y ${TEMP_PACKAGES[@]} && \
-apt-get autoremove -y && \
-rm -rf /src/* /tmp/* /var/lib/apt/lists/* && \
-rm -f /usr/local/bin/viewadsb && ln -s /usr/local/bin/readsb /usr/local/bin/viewadsb
