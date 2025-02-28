@@ -31,11 +31,14 @@ cp dump1090 /
 
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
 
-ARG TARGETPLATFORM TARGETOS TARGETARCH
+ARG TARGETPLATFORM TARGETOS TARGETARCH \
+    VERSION_REPO="sdr-enthusiasts/docker-sdrplay-beast1090" \
+    VERSION_BRANCH="##BRANCH##"
 
 ENV S6_KILL_FINISH_MAXTIME=10000 \
     UPDATE_PLUGINS=true \
     SOAPYSDR=sdrplay
+
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -66,7 +69,7 @@ chmod +x /tmp/install_sdrplay.sh && \
 /tmp/install_sdrplay.sh && \
 # Add Container Version
 { [[ "${VERSION_BRANCH:0:1}" == "#" ]] && VERSION_BRANCH="main" || true; } && \
-echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(curl -ssL "https://api.github.com/repos/$VERSION_REPO/commits/$VERSION_BRANCH" | awk '{if ($1=="\"sha\":") {print substr($2,2,7); exit}}')_$VERSION_BRANCH" > /.CONTAINER_VERSION && \
+echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(curl -ssL "https://api.github.com/repos/$VERSION_REPO/commits/$VERSION_BRANCH" | awk '{if ($1=="\"sha\":") {print substr($2,2,7); exit}}')_$VERSION_BRANCH" | tee /CONTAINER_VERSION && \
 # Clean up:
 apt-get autoremove -q -o APT::Autoremove::RecommendsImportant=0 -o APT::Autoremove::SuggestsImportant=0 -y "${TEMP_PACKAGES[@]}" && \
 apt-get clean -q -y && \
