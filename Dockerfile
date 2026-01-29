@@ -1,4 +1,4 @@
-FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base as build
+FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base AS build
 
 RUN set -x && \
     ##define required packages
@@ -26,6 +26,16 @@ RUN set -x && \
     cd build && \
     git clone --depth 1 --single-branch https://github.com/SDRplay/dump1090 && \
     cd dump1090 && \
+    . /etc/os-release && \
+    # distro="$ID" && \
+    # version="$VERSION_ID" && \
+    codename="$VERSION_CODENAME" && \
+    if [[ "$codename" == "trixie" ]]; then \
+    #### FIXME: This is a stupid workaround for an apparent change in the
+    # way that calloc is called in trixie (well, I guess gcc) vs previous versions
+    # upstream needs to fix this properly
+    sed -i 's/calloc(sizeof(\*service), 1)/calloc(1, sizeof(\*service))/g' net_io.c; \
+    fi && \
     make RTLSDR=no AIRCRAFT_HASH_BITS=14 -j "$(nproc)" && \
     cp dump1090 /
 
