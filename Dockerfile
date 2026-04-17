@@ -55,6 +55,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY --from=build /dump1090 /usr/bin/dump1090
 
+COPY install_sdrplay.sh /tmp/install_sdrplay.sh
+
 RUN set -x && \
     #
     echo "TARGETPLATFORM $TARGETPLATFORM" && \
@@ -75,7 +77,6 @@ RUN set -x && \
     #
     # Install the SDRPlay driver
     mkdir -p /etc/udev/rules.d/ && \
-    curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/docker-sdrplay-beast1090/main/install_sdrplay.sh && \
     chmod +x /tmp/install_sdrplay.sh && \
     /tmp/install_sdrplay.sh && \
     # Add Container Version
