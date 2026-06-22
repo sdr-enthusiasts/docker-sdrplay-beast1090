@@ -41,22 +41,22 @@ sudo chmod go=r /etc/udev/rules.d/* /etc/udev/hwdb.d/*
 
 After installing these `udev` rules, you should unplug and replug your SDRPlay device to make sure the rules take effect.
 
-You should also have `docker` installed on your machine. If you haven't please see [here](https://github.com/sdr-enthusiasts/docker-install) for instructions.
+You should also have `docker` installed on your machine. If you haven't please see [docker install](https://github.com/sdr-enthusiasts/docker-install) for instructions.
 
 ### Going live with Docker Compose
 
 You can use the [`docker-compose.yml`](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090/blob/main/docker-compose.yml) file in this repository as an example. Feel free to add the relevant part to an existing docker compose stack.
 
-**IMPORTANT**: You MUST read the [SDRplay License](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay) and AGREE to it before you can use this container. You must record your agreement by setting the `I_AGREE_TO_THE_SDRPLAY_LICENSE` environment variable to `yes` or `true`.  
+**IMPORTANT**: You MUST read the [SDRplay License](https://github.com/sdr-enthusiasts/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay) and AGREE to it before you can use this container. You must record your agreement by setting the `I_AGREE_TO_THE_SDRPLAY_LICENSE` environment variable to `yes` or `true`.
 
 If you need to add any additional parameter to `dump1090`, you can do so using the `DUMP1090_EXTRA_ARGS` environment parameter in `docker-compose.yml`.
 
 Example:
 
 ```yaml
-    environment:
-      - DUMP1090_EXTRA_ARGS=--fix --max-range 500 --phase-enhance --lat ${FEEDER_LAT} --lon ${FEEDER_LONG} --adsbMode 1
-      - I_AGREE_TO_THE_SDRPLAY_LICENSE=true
+environment:
+  - DUMP1090_EXTRA_ARGS=--fix --max-range 500 --phase-enhance --lat ${FEEDER_LAT} --lon ${FEEDER_LONG} --adsbMode 1
+  - I_AGREE_TO_THE_SDRPLAY_LICENSE=true
 ```
 
 <details>
@@ -151,10 +151,10 @@ Debug mode flags: d = Log frames decoded with errors
 If you use the [`docker-ultrafeeder`](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) container, you should add the following to the environment variables to feed the Beast data to that container:
 
 ```yaml
-      - 
-      - ULTRAFEEDER_CONFIG=
-        ...
-        adsb,sdrplay-beast1090,30005,beast_in;
+-
+- ULTRAFEEDER_CONFIG=
+  ...
+  adsb,sdrplay-beast1090,30005,beast_in;
 ```
 
 After saving your `docker-compose.yml`, don't forget to start the service with `docker compose up -d`.

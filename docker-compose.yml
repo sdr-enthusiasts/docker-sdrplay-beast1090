@@ -5,7 +5,7 @@ services:
     hostname: sdrplay-beast1090
     restart: always
     device_cgroup_rules:
-      - 'c 189:* rwm'
+      - "c 189:* rwm"
     volumes:
       - /dev/bus/usb:/dev/bus/usb:ro
       - /dev/shm:/dev/shm:rw

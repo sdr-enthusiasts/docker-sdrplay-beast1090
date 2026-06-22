@@ -4,7 +4,7 @@
 #shellcheck disable=SC1091
 source /scripts/common
 
-# avoid fast loops when dump1090 fails and allow drivers to be established 
+# avoid fast loops when dump1090 fails and allow drivers to be established
 sleep 5
 
 s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)

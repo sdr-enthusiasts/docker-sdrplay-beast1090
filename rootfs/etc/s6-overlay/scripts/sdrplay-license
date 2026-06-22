@@ -39,4 +39,3 @@ fi
 "${s6wrap[@]}" echo "https://sdr-e.com/docker-sdrplay-beast1090/blob/main/LICENSE-SDRplay"
 "${s6wrap[@]}" echo "If you do not agree with the terms of this license for any reason, please STOP and REMOVE this container immediately!"
 "${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
-
