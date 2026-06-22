@@ -1,5 +1,6 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base AS build
 
+# hadolint ignore=DL3003,SC3014
 RUN set -x && \
     ##define required packages
     KEPT_PACKAGES=() && \
