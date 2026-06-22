@@ -4,7 +4,7 @@
 ARCH=`uname -m`
 OSDIST="Unknown"
 
-VERS="3.14"
+VERS="3.15"
 MAJVERS="3"
 
 if [ -f "/etc/os-release" ]; then
@@ -33,7 +33,14 @@ if [ "${ARCH}" != "aarch64" ] && [ "$ARCH" != "x86_64" ]; then
     echo "Unsupported ARCH. Exiting..."
     exit 1
 else
-    URL="https://www.sdrplay.com/software/SDRplay_RSP_API-Linux-3.14.0.run"
+    URL="https://www.sdrplay.com/software/SDRplay_RSP_API-Linux-3.15.2.run"
+fi
+
+# Override arch install dir for x86_64, as SDRPlay is now storing those binaries in the amd64 dir,
+# not the x86_64 dir. aarch64 is still in the aarch64 dir
+ARCH_DIR="${ARCH}"
+if [ "${ARCH}" == "x86_64" ] ; then
+    ARCH_DIR="amd64"
 fi
 
 # Below is an adaptation of the install script from the SDRPlay website
@@ -81,7 +88,7 @@ mkdir -p ${INSTALLBINDIR} || exit 1
 
 echo -n "Installing ${INSTALLLIBDIR}/libsdrplay_api.so.${VERS}..."
 rm -f ${INSTALLLIBDIR}/libsdrplay_api.so.${VERS} || exit 1
-cp -f ${ARCH}/libsdrplay_api.so.${VERS} ${INSTALLLIBDIR}/. || exit 1
+cp -f ${ARCH_DIR}/libsdrplay_api.so.${VERS} ${INSTALLLIBDIR}/. || exit 1
 chmod 644 ${INSTALLLIBDIR}/libsdrplay_api.so.${VERS} || exit 1
 rm -f ${INSTALLLIBDIR}/libsdrplay_api.so.${MAJVERS} || exit 1
 ln -s ${INSTALLLIBDIR}/libsdrplay_api.so.${VERS} ${INSTALLLIBDIR}/libsdrplay_api.so.${MAJVERS} || exit 1
@@ -95,7 +102,7 @@ chmod 644 ${INSTALLINCDIR}/sdrplay_api*.h || exit 1
 echo "Done"
 
 echo -n "Installing API Service in ${INSTALLBINDIR}..."
-cp -f ${ARCH}/sdrplay_apiService ${INSTALLBINDIR}/sdrplay_apiService  || exit 1
+cp -f ${ARCH_DIR}/sdrplay_apiService ${INSTALLBINDIR}/sdrplay_apiService  || exit 1
 chmod 755 ${INSTALLBINDIR}/sdrplay_apiService || exit 1
 echo "Done"
 
