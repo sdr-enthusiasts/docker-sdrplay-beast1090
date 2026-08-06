@@ -12,7 +12,7 @@ s6wrap=(s6wrap --quiet --timestamps --prepend="$(basename "$0")" --args)
 # if we're on an unsupported architecture SDR play isn't installed, exit
 if [ "${ARCH}" != "aarch64" ] && [ "$ARCH" != "x86_64" ]; then
     "${s6wrap[@]}" echo "Unsupported architecture. The system reports $ARCH, we only support aarch64 and x86_64."
-    exit 1
+    exit 78
 fi
 
 # Verify the SDRplay license has been agreed to
@@ -26,7 +26,7 @@ if ! chk_enabled "$I_AGREE_TO_THE_SDRPLAY_LICENSE"; then
     "${s6wrap[@]}" echo "I_AGREE_TO_THE_SDRPLAY_LICENSE=true in the Docker Environment variables for this container, and recreate the container"
     "${s6wrap[@]}" echo "The container will now exit."
     "${s6wrap[@]}" echo "-------------------------------------------------------------------------------------------------------------------------------------"
-    exit 1
+    exit 78
 fi
 
 #shellcheck disable=SC2154
