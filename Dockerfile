@@ -19,9 +19,9 @@ RUN set -x && \
     #
     # Install the SDRPlay driver
     mkdir -p /etc/udev/rules.d/ && \
-    curl --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
+    curl --fail --location --output /tmp/install_sdrplay.sh https://raw.githubusercontent.com/sdr-enthusiasts/install-libsdrplay/main/install_sdrplay.sh && \
     chmod +x /tmp/install_sdrplay.sh && \
-    /tmp/install_sdrplay.sh --no-soapy && \
+    /tmp/install_sdrplay.sh --no-s6 --no-soapy && \
     # build the special dump1090:
     mkdir build && \
     cd build && \
@@ -55,7 +55,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY --from=build /dump1090 /usr/bin/dump1090
 
-COPY install_sdrplay.sh /tmp/install_sdrplay.sh
+COPY --from=build /tmp/install_sdrplay.sh /tmp/install_sdrplay.sh
 
 RUN set -x && \
     #
@@ -78,7 +78,9 @@ RUN set -x && \
     # Install the SDRPlay driver
     mkdir -p /etc/udev/rules.d/ && \
     chmod +x /tmp/install_sdrplay.sh && \
-    /tmp/install_sdrplay.sh && \
+    SDRPLAY_INSTALL_LIBDIR=/usr/lib \
+    SDRPLAY_INSTALL_INCDIR=/usr/include \
+    /tmp/install_sdrplay.sh --no-s6 --no-soapy && \
     # Add Container Version
     { [[ "${VERSION_BRANCH:0:1}" == "#" ]] && VERSION_BRANCH="main" || true; } && \
     echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_$(curl -ssL "https://api.github.com/repos/$VERSION_REPO/commits/$VERSION_BRANCH" | awk '{if ($1=="\"sha\":") {print substr($2,2,7); exit}}')_$VERSION_BRANCH" | tee /CONTAINER_VERSION && \
