@@ -1,6 +1,6 @@
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:base AS build
 
-# hadolint ignore=DL3003,SC3014
+# hadolint ignore=DL3003,SC3010,SC3014
 RUN set -x && \
     ##define required packages
     KEPT_PACKAGES=() && \
@@ -31,13 +31,15 @@ RUN set -x && \
     # distro="$ID" && \
     # version="$VERSION_ID" && \
     codename="$VERSION_CODENAME" && \
-    if [[ "$codename" == "trixie" ]]; then \
+    if [[ "$codename" != "bookworm" ]]; then \
     #### FIXME: This is a stupid workaround for an apparent change in the
     # way that calloc is called in trixie (well, I guess gcc) vs previous versions
     # upstream needs to fix this properly
     sed -i 's/calloc(sizeof(\*service), 1)/calloc(1, sizeof(\*service))/g' net_io.c; \
     fi && \
-    make RTLSDR=no AIRCRAFT_HASH_BITS=14 -j "$(nproc)" && \
+    # GCC 15+ (forky) warns on char arrays without room for the NUL, and upstream
+    # builds with -Werror. -Wno-<warning> is ignored by GCC 14 (trixie).
+    make RTLSDR=no AIRCRAFT_HASH_BITS=14 EXTRACFLAGS=-Wno-unterminated-string-initialization -j "$(nproc)" && \
     cp dump1090 /
 
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
