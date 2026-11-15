@@ -45,7 +45,7 @@ RUN set -x && \
 FROM ghcr.io/sdr-enthusiasts/docker-baseimage:wreadsb
 
 ARG TARGETPLATFORM TARGETOS TARGETARCH \
-    VERSION_REPO="sdr-enthusiasts/docker-sdrplay-beast1090" \
+    VERSION_SHA \
     VERSION_BRANCH="##BRANCH##"
 
 ENV S6_KILL_FINISH_MAXTIME=10000 \
@@ -85,7 +85,7 @@ RUN set -x && \
     /tmp/install_sdrplay.sh --no-s6 --no-soapy && \
     # Add Container Version
     { [[ "${VERSION_BRANCH:0:1}" == "#" ]] && VERSION_BRANCH="main" || true; } && \
-    SHA="$(curl --fail --silent --show-error --location --retry 3 "https://api.github.com/repos/$VERSION_REPO/commits/$VERSION_BRANCH" | awk '$1=="\"sha\":" && !f {print substr($2,2,7); f=1}')" && \
+    SHA="${VERSION_SHA:-local}" && SHA="${SHA:0:7}" && \
     [[ -n "$SHA" ]] && \
     echo "$(TZ=UTC date +%Y%m%d-%H%M%S)_${SHA}_$VERSION_BRANCH" | tee /CONTAINER_VERSION && \
     # Clean up:
